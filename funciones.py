@@ -31,20 +31,22 @@ class GeneradorAleatorio:
         while len(datos) < n:
             u1 = self.generar_uniforme(0, 1)
             u2 = self.generar_uniforme(0, 1)
-            n1 = round(((np.sqrt(-2 * np.log(1 - u1))) * np.cos(2 * np.pi * u2)) * desviacion + media, 4)
-            n2 = round(((np.sqrt(-2 * np.log(1 - u1))) * np.sin(2 * np.pi * u2)) * desviacion + media, 4)
+            # Evitar que u1 sea 0 o 1 ya que el logaritmo de 0 no está definido y la raiz de un número negativo tampoco
+            if u1 == 0:
+                u1 = 0.0001
+            n1 = round(((np.sqrt(-2 * np.log(u1))) * np.cos(2 * np.pi * u2)) * desviacion + media, 4)
+            n2 = round(((np.sqrt(-2 * np.log(u1))) * np.sin(2 * np.pi * u2)) * desviacion + media, 4)
             datos.append(n1)
             datos.append(n2)
 
         if n % 2 != 0:
-            return datos[:-1] # Si la cantidad de datos es impar, se elimina el último elemento
+            return datos[:-1]  # Si la cantidad de datos es impar, se elimina el último elemento
         return datos
 
 
-# # # Ejemplo de uso
-# generador = GeneradorAleatorio(seed=42)
-# #
-# # # Generar 10 números aleatorios uniformes entre 0 y 100
-# print(generador.generar_numeros_normales(2, 5, 200000))
-#
+if __name__ == "__main__":
+    generador = GeneradorAleatorio(seed=0)
+    print(generador.generar_normales(1, 1, 200000))
+
+
 
